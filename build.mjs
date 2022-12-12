@@ -1,7 +1,6 @@
 import archiver from 'archiver'
 import esbuild from 'esbuild'
 import fs from 'fs-extra'
-import { lessLoader } from 'esbuild-plugin-less'
 const outdir = 'build'
 
 async function deleteOldDir() {
@@ -25,13 +24,6 @@ async function runEsbuild() {
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
     jsx: 'automatic',
-    loader: {
-      '.ttf': 'dataurl',
-      '.woff': 'dataurl',
-      '.woff2': 'dataurl',
-      '.less': 'css',
-    },
-    plugins: [lessLoader()],
   })
 }
 

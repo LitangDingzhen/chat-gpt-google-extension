@@ -3,7 +3,6 @@ import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config } from './search-engine-configs.mjs'
 import './styles.css'
-import './katex.less'
 import { getPossibleElementByQuerySelector } from './utils.mjs'
 import { getUserConfig } from '../config'
 
@@ -24,7 +23,13 @@ async function run(question, siteConfig) {
 
   const userConfig = await getUserConfig()
   render(
-    <ChatGPTCard question={question} triggerMode={userConfig.triggerMode || 'always'} />,
+    <>
+      <link
+        rel="stylesheet"
+        href={'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css'}
+      />
+      <ChatGPTCard question={question} triggerMode={userConfig.triggerMode || 'always'} />
+    </>,
     container,
   )
 }
