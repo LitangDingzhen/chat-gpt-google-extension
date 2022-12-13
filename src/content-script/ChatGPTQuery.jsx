@@ -88,7 +88,23 @@ function ChatGPTQuery(props) {
     })
   }
 
-  const port = useMemo(() => Browser.runtime.connect(), [])
+  const port = useMemo(() => {
+    const port = Browser.runtime.connect()
+    /**
+     * @param {Browser.Runtime.Port} p
+     */
+    const disconnectListener = () => {
+      if (isReady) {
+        setTalk([...talk, new Talk('error', 'port disconnected')])
+      } else {
+        UpdateAnswer('port disconnected', false, 'error')
+        setIsReady(true)
+      }
+    }
+    port.onDisconnect.addListener(disconnectListener)
+    return port
+  }, [])
+
   useEffect(() => {
     const listener = (msg) => {
       if (msg.answer) {
@@ -147,7 +163,7 @@ function ChatGPTQuery(props) {
           try {
             port.postMessage({ question })
           } catch (e) {
-            UpdateAnswer('Error: ' + e, false, 'error')
+            UpdateAnswer(e.toString(), false, 'error')
           }
         }}
       />
