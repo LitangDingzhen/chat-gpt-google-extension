@@ -98,7 +98,6 @@ function ChatGPTQuery(props) {
         setTalk([...talk, new Talk('error', 'port disconnected')])
       } else {
         UpdateAnswer('port disconnected', false, 'error')
-        setIsReady(true)
       }
     }
     port.onDisconnect.addListener(disconnectListener)
